@@ -23,6 +23,9 @@ export class ClerkController {
     }
   }}})
   async handleWebhook(@Body() body: any) {
+
+    console.log('⚡ Webhook recibido:', JSON.stringify(body, null, 2));
+
     if (body.type === 'user.created') {
       await this.clerkService.handleUserCreatedWebhook(body.data);
     }
