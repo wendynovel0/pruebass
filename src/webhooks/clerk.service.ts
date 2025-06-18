@@ -8,9 +8,13 @@ export class ClerkService {
 
   async handleUserCreatedWebhook(data: any) {
     const userId = data.id;
-    const email = data.email_addresses?.[0]?.email_address;
+    const emailObj = data.email_addresses?.[0];
+    const email = emailObj?.email_address;
 
-    if (!email) return;
+    if (!userId || !email) {
+      console.warn('Webhook incompleto: falta ID o email');
+      return;
+    }
 
     await this.novuService.sendWelcomeNotification(userId, email);
   }
