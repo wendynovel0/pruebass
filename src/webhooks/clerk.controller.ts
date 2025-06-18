@@ -10,24 +10,21 @@ export class ClerkController {
 
   @Post()
   @HttpCode(200)
-  @ApiOperation({ summary: 'Webhook de Clerk para nuevos usuarios' })
+  @ApiOperation({ summary: 'Webhook de Clerk: session.created' })
   @ApiBody({ schema: { example: {
-    type: 'user.created',
+    type: 'session.created',
     data: {
-      id: 'user_29w83sxmDNGwOuEthce5gg56FcC',
-      email_addresses: [
-        {
-          email_address: 'example@example.org'
-        }
-      ]
+      id: 'sess_12345',
+      user_id: 'user_abc123',
+      created_at: 1654012591835,
+      last_active_at: 1654012591835
     }
   }}})
   async handleWebhook(@Body() body: any) {
+    console.log('📦 Webhook recibido de Clerk:', JSON.stringify(body, null, 2));
 
-    console.log('⚡ Webhook recibido:', JSON.stringify(body, null, 2));
-
-    if (body.type === 'user.created') {
-      await this.clerkService.handleUserCreatedWebhook(body.data);
+    if (body.type === 'session.created') {
+      await this.clerkService.handleSessionCreatedWebhook(body.data);
     }
 
     return { received: true };

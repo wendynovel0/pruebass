@@ -6,16 +6,15 @@ import { NovuService } from '../novu/novu.service';
 export class ClerkService {
   constructor(private readonly novuService: NovuService) {}
 
-  async handleUserCreatedWebhook(data: any) {
-    const userId = data.id;
-    const emailObj = data.email_addresses?.[0];
-    const email = emailObj?.email_address;
+  async handleSessionCreatedWebhook(data: any) {
+    const userId = data.user_id;
 
-    if (!userId || !email) {
-      console.warn('Webhook incompleto: falta ID o email');
+    if (!userId) {
+      console.warn('Webhook de sesión sin user_id');
       return;
     }
 
-    await this.novuService.sendWelcomeNotification(userId, email);
+    // Solo mandamos la notificación con el ID como subscriberId
+    await this.novuService.sendWelcomeNotification(userId);
   }
 }

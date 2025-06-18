@@ -16,11 +16,10 @@ export class NovuService {
     this.novu = new Novu(apiKey);
   }
 
-  async sendWelcomeNotification(subscriberId: string, email: string) {
+  async sendWelcomeNotification(subscriberId: string) {
     await this.novu.trigger('onboarding-demo-workflow', {
       to: {
-        subscriberId,
-        email,
+        subscriberId
       },
       payload: {},
     });
